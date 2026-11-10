@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.time.LocalDateTime;
+
 public class Employee {
     private int employeeId;
     private String name;
@@ -73,7 +75,20 @@ public class Employee {
         startTime = time;
 
     }
+    public void punchIn(){
+        LocalDateTime now = LocalDateTime.now();
+
+        startTime = now.getHour() + (now.getMinute() / 60.0);
+    }
+
     public void punchOut(double time){
         hoursWorked += (time - startTime);
+    }
+
+    public void punchOut(){
+        LocalDateTime now = LocalDateTime.now();
+
+        double currentTime = now.getHour() + (now.getMinute() / 60.0);
+        hoursWorked += (currentTime - startTime);
     }
 }
