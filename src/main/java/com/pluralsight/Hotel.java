@@ -10,13 +10,20 @@ public class Hotel {
 
     private int bookedSuites;
     private int bookedRooms;
-    private LocalDate reservationDate;
 
     // constructors
     public Hotel(String name, int numberOfSuites, int numberOfRooms) {
         this.name = name;
         this.numberOfSuites = numberOfSuites;
         this.numberOfRooms = numberOfRooms;
+    }
+
+    public Hotel(String name, int numberOfSuites, int numberOfRooms, int bookedSuites, int bookedRooms) {
+        this.name = name;
+        this.numberOfSuites = numberOfSuites;
+        this.numberOfRooms = numberOfRooms;
+        this.bookedSuites = bookedSuites;
+        this.bookedRooms = bookedRooms;
     }
 
     // Getters
@@ -48,16 +55,31 @@ public class Hotel {
         return bookedSuites < numberOfSuites;
     }
 
-    public void bookRoom() {
+    public boolean bookRoom() {
         if (isRoomAvailable()) {
             bookedRooms++;
+            return true;
         }
+        return false;
     }
 
-    public void bookSuite() {
-        if (isSuiteAvailable()) {
-            bookedSuites++;
+    public boolean bookRoom(int roomCount, boolean suite){
+        if (roomCount <= 0){
+            return false;
         }
+        if (suite) {
+            if (roomCount <= getAvailableSuites()) {
+                bookedSuites += roomCount;
+                return true;
+            }
+        } else {
+            if (roomCount <= getAvailableRooms()) {
+                bookedRooms += roomCount;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public int getAvailableRooms() {
@@ -66,10 +88,5 @@ public class Hotel {
 
     public int getAvailableSuites() {
         return numberOfSuites - bookedSuites;
-    }
-
-    public boolean isAvailableToday(LocalDate reservationDate) {
-        return reservationDate.equals(LocalDate.now())
-                && bookedRooms < numberOfRooms;
     }
 }
